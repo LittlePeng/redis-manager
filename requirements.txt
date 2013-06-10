@@ -1,0 +1,3 @@
+redis-cli
+Kazoo
+Zope.interface

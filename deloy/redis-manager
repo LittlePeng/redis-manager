@@ -1,0 +1,32 @@
+#!/bin/bash
+#chkconfig: 35 90 10
+#description: redis-manager
+
+monitor_start() {
+ python /usr/local/redis-manager/redis-manager.py -d
+}
+
+monitor_stop() {
+  MPID=`ps axu|grep "redis-manager.py"|grep -v grep|awk '{ print $2}'`
+ if [ "$MPID" != "" ];
+  then
+	 echo "kill redis-manager ( pid =" $MPID ")"
+	 kill -s KILL $MPID
+ fi
+}
+
+monitor_restart(){
+	monitor_stop
+	monitor_start
+}
+monitor_usage() {
+  echo -e "Usage: $0 {start,stop,restart}"
+  exit 1
+}
+
+case "$1" in
+  start) monitor_start ;;
+  stop)  monitor_stop  ;;
+  restart) monitor_restart ;;
+  *)     monitor_usage ;;
+esac
